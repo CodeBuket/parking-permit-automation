@@ -14,7 +14,7 @@ def automate_web_interaction(url, license_plate):
     opts = FirefoxOptions()
     opts.add_argument("--width=1200")
     opts.add_argument("--height=800")
-    opts.binary_location = "/snap/bin/firefox"  # Explicit path for GitHub Actions
+    opts.binary_location = "/usr/bin/firefox"  # Explicit path for GitHub Actions
     
     # Use webdriver-manager to handle geckodriver
     service = Service(GeckoDriverManager().install())
