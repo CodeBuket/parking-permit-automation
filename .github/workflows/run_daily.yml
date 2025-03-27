@@ -28,6 +28,6 @@ jobs:
           sudo apt-get install -y firefox
 
       - name: Run the script
-        run: python parking_automation.py
+        run: python AutoPark.py
         env:
           LICENSE_PLATE: ${{ secrets.LICENSE_PLATE }}  # Optional: Store sensitive data in Secrets
