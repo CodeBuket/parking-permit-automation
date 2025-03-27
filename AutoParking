@@ -1,3 +1,4 @@
+import os
 from selenium import webdriver
 from selenium.webdriver import FirefoxOptions
 from selenium.webdriver.common.by import By
@@ -74,6 +75,6 @@ if __name__ == "__main__":
     target_url = "https://vpermit.com.au/parkcity/ClaimableEvents/Claim?code=32440"  # Replace with your actual URL
     
     # License plate to enter
-    license_plate = "NCT322"  # replace with your license plate
+    license_plate = os.environ.get("LICENSE_PLATE", "DEFAULT_PLATE")
     
     automate_web_interaction(target_url, license_plate)
