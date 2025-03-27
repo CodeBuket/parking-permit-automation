@@ -17,15 +17,18 @@ jobs:
         with:
           python-version: '3.10'
 
-      - name: Install Firefox
+      - name: Install Firefox and dependencies
         run: |
+          # Add Mozilla PPA for traditional Firefox
+          sudo add-apt-repository ppa:mozillateam/ppa -y
           sudo apt-get update
           sudo apt-get install -y firefox
-
-      - name: Install Python dependencies
-        run: |
-          firefox --version
-          pip install selenium webdriver-manager
+          
+          # Set Firefox as default
+          sudo update-alternatives --set x-www-browser /usr/bin/firefox
+          
+          # Install webdriver-manager
+          pip install webdriver-manager
 
       - name: Run script
         run: python AutoPark.py
