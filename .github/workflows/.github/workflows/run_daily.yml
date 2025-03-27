@@ -1,0 +1,33 @@
+name: Daily Parking Automation
+
+on:
+  schedule:
+    - cron: '30 19 * * *'  # Runs at 7:00 AM UTC every day
+  workflow_dispatch:     # Optional: Allow manual triggers
+
+jobs:
+  automate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Install Firefox (for Selenium)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y firefox
+
+      - name: Run the script
+        run: python parking_automation.py
+        env:
+          LICENSE_PLATE: ${{ secrets.LICENSE_PLATE }}  # Optional: Store sensitive data in Secrets
