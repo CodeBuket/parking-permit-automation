@@ -22,10 +22,21 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Install Firefox (for Selenium)
+      - name: Install Firefox and Geckodriver
         run: |
+          # Remove conflicting versions
+          sudo rm -f /usr/bin/firefox /usr/local/bin/geckodriver
+    
+          # Install Firefox ESR (Extended Support Release)
           sudo apt-get update
-          sudo apt-get install -y firefox
+          sudo apt-get install -y firefox-esr
+          
+          # Install the correct geckodriver (v0.34.0 works with Firefox ESR)
+          wget https://github.com/mozilla/geckodriver/releases/download/v0.34.0/geckodriver-v0.34.0-linux64.tar.gz
+          tar -xvzf geckodriver-v0.34.0-linux64.tar.gz
+          sudo mv geckodriver /usr/local/bin/
+          sudo chmod +x /usr/local/bin/geckodriver
+          geckodriver --version
 
       - name: Run the script
         run: python AutoPark.py
