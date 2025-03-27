@@ -4,6 +4,8 @@ from selenium.webdriver import FirefoxOptions
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.firefox.service import Service
+from webdriver_manager.firefox import GeckoDriverManager
 import time
 
 def automate_web_interaction(url, license_plate):
@@ -12,10 +14,11 @@ def automate_web_interaction(url, license_plate):
     opts = FirefoxOptions()
     opts.add_argument("--width=1200")
     opts.add_argument("--height=800")
+    opts.binary_location = "/usr/bin/firefox-esr"  # Explicit path for GitHub Actions
     
-    # Initialize Firefox driver
-    print("Launching Firefox...")
-    driver = webdriver.Firefox(options=opts)
+    # Use webdriver-manager to handle geckodriver
+    service = Service(GeckoDriverManager().install())
+    driver = webdriver.Firefox(service=service, options=opts)
     
     try:
         # Open the URL directly
