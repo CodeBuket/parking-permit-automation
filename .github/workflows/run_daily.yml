@@ -2,8 +2,8 @@ name: Daily Parking Automation
 
 on:
   schedule:
-    - cron: '30 19 * * *'  # Runs at 7:00 AM UTC every day
-  workflow_dispatch:     # Optional: Allow manual triggers
+    - cron: '30 19 * * *'  # 7:30 AM NZST (7:30 PM UTC)
+  workflow_dispatch:
 
 jobs:
   automate:
@@ -17,28 +17,16 @@ jobs:
         with:
           python-version: '3.10'
 
-      - name: Install dependencies
+      - name: Install Firefox
         run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
-
-      - name: Install Firefox and Geckodriver
-        run: |
-          # Remove conflicting versions
-          sudo rm -f /usr/bin/firefox /usr/local/bin/geckodriver
-    
-          # Install Firefox ESR (Extended Support Release)
           sudo apt-get update
-          sudo apt-get install -y firefox-esr
-          
-          # Install the correct geckodriver (v0.34.0 works with Firefox ESR)
-          wget https://github.com/mozilla/geckodriver/releases/download/v0.34.0/geckodriver-v0.34.0-linux64.tar.gz
-          tar -xvzf geckodriver-v0.34.0-linux64.tar.gz
-          sudo mv geckodriver /usr/local/bin/
-          sudo chmod +x /usr/local/bin/geckodriver
-          geckodriver --version
+          sudo apt-get install -y firefox
 
-      - name: Run the script
+      - name: Install Python dependencies
+        run: |
+          pip install selenium webdriver-manager
+
+      - name: Run script
         run: python AutoPark.py
         env:
-          LICENSE_PLATE: ${{ secrets.LICENSE_PLATE }}  # Optional: Store sensitive data in Secrets
+          LICENSE_PLATE: ${{ secrets.LICENSE_PLATE }}
